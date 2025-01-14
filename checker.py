@@ -6,9 +6,9 @@ RPC_URLS = [
     'https://arbitrum.llamarpc.com/',
     'https://arb1.arbitrum.io/rpc',
     'https://rpc.ankr.com/arbitrum'
-]  # Укажите ваш RPC URL
+]  # Укажите ваш RPC URL указал для примера
 CONTRACT_ADDRESS = '0xcontract'  # Укажите адрес контракта
-MINT_GROUPS = list(range(0, 3))  # Группы для минта, укажите диапазон
+MINT_GROUPS = list(range(0, 2))  # Группы для минта, укажите диапазон
 WALLETS_FILE = 'wallets.txt'  # Файл с кошельками
 
 # ABI контракта (замените на актуальное значение)
@@ -74,6 +74,9 @@ def main():
         return
 
     print("Результаты проверки:\n")
+    eligible_count = 0
+    not_eligible_count = 0
+
     for wallet in wallets:
         eligible = False
         for group in MINT_GROUPS:
@@ -85,11 +88,18 @@ def main():
                 if quota > 0:
                     print(f"Кошелек: {wallet} | Статус: Eligible | Группа: {group} | Quota: {quota}")
                     eligible = True
+                    eligible_count += 1
                     break
             except Exception as e:
                 print(f"Кошелек: {wallet} | Ошибка: {e}")
         if not eligible:
             print(f"Кошелек: {wallet} | Статус: Not Eligible")
+            not_eligible_count += 1
+
+    print("\nИтоговые результаты:")
+    print(f"Всего кошельков: {len(wallets)}")
+    print(f"Eligible: {eligible_count}")
+    print(f"Not Eligible: {not_eligible_count}")
 
 if __name__ == "__main__":
     main()
